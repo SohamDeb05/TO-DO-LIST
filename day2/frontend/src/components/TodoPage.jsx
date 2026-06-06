@@ -99,7 +99,7 @@ function playNotificationAudio() {
   } catch (e) {
   }
 }
-const S = 15;
+const S = 20;
 const SM = 14;
 function formatDate() {
   return (/* @__PURE__ */ new Date()).toLocaleDateString("en-US", {
@@ -721,7 +721,7 @@ export default function TodoPage({ user, onLogout, onUpdateUser }) {
     if (searchQuery.trim()) {
       return {
         title: `Search: "${searchQuery}"`,
-        icon: <Search size={22} />,
+        icon: <Search size={26} />,
         color: "var(--ms-blue)",
         emptyText: "No tasks match your search."
       };
@@ -731,7 +731,7 @@ export default function TodoPage({ user, onLogout, onUpdateUser }) {
       const list = lists.find((l) => l.id === listId);
       return {
         title: list ? list.name : "Untitled list",
-        icon: <ListIcon size={22} />,
+        icon: <ListIcon size={26} />,
         color: "var(--ms-blue)",
         emptyText: "This list is empty."
       };
@@ -739,38 +739,38 @@ export default function TodoPage({ user, onLogout, onUpdateUser }) {
     return {
       myday: {
         title: "My Day",
-        icon: <Sun size={22} />,
+        icon: <Sun size={26} />,
         color: "var(--ms-blue)",
         emptyText: "Focus on your day here."
       },
       important: {
         title: "Important",
-        icon: <Star size={22} />,
+        icon: <Star size={26} />,
         color: "#d13438",
         // Dark Pink/Red
         emptyText: "Try adding a task to Important."
       },
       planned: {
         title: "Planned",
-        icon: <CalendarDays size={22} />,
+        icon: <CalendarDays size={26} />,
         color: "#0078d4",
         emptyText: "Tasks with due dates show up here."
       },
       assigned: {
         title: "Assigned to me",
-        icon: <CircleUser size={22} />,
+        icon: <CircleUser size={26} />,
         color: "var(--ms-success)",
         emptyText: "Tasks assigned to you show up here."
       },
       tasks: {
         title: "Tasks",
-        icon: <Home size={22} />,
+        icon: <Home size={26} />,
         color: "var(--ms-blue)",
         emptyText: "Add a task to get started."
       }
     }[activeNav] || {
       title: "Tasks",
-      icon: <Home size={22} />,
+      icon: <Home size={26} />,
       color: "var(--ms-blue)",
       emptyText: "Add a task to get started."
     };
