@@ -16,6 +16,9 @@ export interface Todo {
   important?: boolean;
   due_date?: string | null;
   list_id?: number | null;
+  note?: string | null;
+  reminder?: string | null;
+  repeat_schedule?: string | null;
   created_at: string;
 }
 
@@ -91,11 +94,11 @@ export async function getTodos() {
   return request<{ todos: Todo[] }>('GET', '/todos');
 }
 
-export async function createTodo(title: string, important?: boolean, due_date?: string | null, list_id?: number | null) {
-  return request<{ todo: Todo }>('POST', '/todos', { title, important, due_date, list_id });
+export async function createTodo(title: string, important?: boolean, due_date?: string | null, list_id?: number | null, note?: string | null, reminder?: string | null, repeat_schedule?: string | null) {
+  return request<{ todo: Todo }>('POST', '/todos', { title, important, due_date, list_id, note, reminder, repeat_schedule });
 }
 
-export async function updateTodo(id: number, patch: { title?: string; completed?: boolean; important?: boolean; due_date?: string | null; list_id?: number | null }) {
+export async function updateTodo(id: number, patch: { title?: string; completed?: boolean; important?: boolean; due_date?: string | null; list_id?: number | null; note?: string | null; reminder?: string | null; repeat_schedule?: string | null }) {
   return request<{ todo: Todo }>('PATCH', `/todos/${id}`, patch);
 }
 

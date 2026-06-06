@@ -122,7 +122,7 @@ app.get('/api/auth/me', requireAuth, async (req, res) => {
 app.get('/api/todos', requireAuth, async (req, res) => {
   try {
     const result = await pool.query(
-      "SELECT id, title, completed, important, TO_CHAR(due_date, 'YYYY-MM-DD') AS due_date, list_id, created_at FROM todos WHERE user_id = $1 ORDER BY created_at ASC",
+      "SELECT id, title, completed, important, TO_CHAR(due_date, 'YYYY-MM-DD') AS due_date, list_id, note, reminder, repeat_schedule, created_at FROM todos WHERE user_id = $1 ORDER BY created_at ASC",
       [req.user.sub],
     );
     return res.json({ todos: result.rows });
@@ -137,13 +137,16 @@ app.post('/api/todos', requireAuth, async (req, res) => {
   const important = req.body.important === true;
   const due_date = req.body.due_date || null;
   const list_id = req.body.list_id || null;
+  const note = req.body.note || null;
+  const reminder = req.body.reminder || null;
+  const repeat_schedule = req.body.repeat_schedule || null;
   if (!title)
     return res.status(400).json({ message: 'Title is required.' });
 
   try {
     const result = await pool.query(
-      "INSERT INTO todos (user_id, title, important, due_date, list_id) VALUES ($1, $2, $3, $4, $5) RETURNING id, title, completed, important, TO_CHAR(due_date, 'YYYY-MM-DD') AS due_date, list_id, created_at",
-      [req.user.sub, title, important, due_date, list_id],
+      "INSERT INTO todos (user_id, title, important, due_date, list_id, note, reminder, repeat_schedule) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id, title, completed, important, TO_CHAR(due_date, 'YYYY-MM-DD') AS due_date, list_id, note, reminder, repeat_schedule, created_at",
+      [req.user.sub, title, important, due_date, list_id, note, reminder, repeat_schedule],
     );
     return res.status(201).json({ todo: result.rows[0] });
   } catch {
@@ -154,7 +157,7 @@ app.post('/api/todos', requireAuth, async (req, res) => {
 // PATCH /api/todos/:id — update todo fields
 app.patch('/api/todos/:id', requireAuth, async (req, res) => {
   const id = Number(req.params.id);
-  const { title, completed, important, due_date, list_id } = req.body;
+  const { title, completed, important, due_date, list_id, note, reminder, repeat_schedule } = req.body;
 
   try {
     const fields = [];
@@ -181,6 +184,18 @@ app.patch('/api/todos/:id', requireAuth, async (req, res) => {
       fields.push(`list_id = $${idx++}`);
       values.push(list_id);
     }
+    if (note !== undefined) {
+      fields.push(`note = $${idx++}`);
+      values.push(note);
+    }
+    if (reminder !== undefined) {
+      fields.push(`reminder = $${idx++}`);
+      values.push(reminder);
+    }
+    if (repeat_schedule !== undefined) {
+      fields.push(`repeat_schedule = $${idx++}`);
+      values.push(repeat_schedule);
+    }
 
     if (fields.length === 0) {
       return res.status(400).json({ message: 'No fields to update.' });
@@ -191,7 +206,7 @@ app.patch('/api/todos/:id', requireAuth, async (req, res) => {
       UPDATE todos
       SET ${fields.join(', ')}
       WHERE id = $${idx++} AND user_id = $${idx++}
-      RETURNING id, title, completed, important, TO_CHAR(due_date, 'YYYY-MM-DD') AS due_date, list_id, created_at
+      RETURNING id, title, completed, important, TO_CHAR(due_date, 'YYYY-MM-DD') AS due_date, list_id, note, reminder, repeat_schedule, created_at
     `;
     const result = await pool.query(query, values);
     if (!result.rowCount)
@@ -209,7 +224,7 @@ app.patch('/api/todos/:id/toggle', requireAuth, async (req, res) => {
     const result = await pool.query(
       `UPDATE todos SET completed = NOT completed
        WHERE id = $1 AND user_id = $2
-       RETURNING id, title, completed, important, TO_CHAR(due_date, 'YYYY-MM-DD') AS due_date, list_id, created_at`,
+       RETURNING id, title, completed, important, TO_CHAR(due_date, 'YYYY-MM-DD') AS due_date, list_id, note, reminder, repeat_schedule, created_at`,
       [id, req.user.sub],
     );
     if (!result.rowCount)

@@ -933,3 +933,90 @@ input  { font-family: inherit; }
   color: var(--ms-blue);
 }
 
+/* ── Popovers & Indicators ──────────────────────────────────────────────── */
+.ms-popover-panel {
+  position: absolute;
+  bottom: 34px;
+  right: 0;
+  background: #ffffff;
+  border: 1px solid var(--ms-border);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  padding: 12px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 220px;
+}
+.ms-popover-panel textarea {
+  width: 100%;
+  border: 1px solid var(--ms-border);
+  border-radius: 4px;
+  padding: 8px;
+  font-size: 13px;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 80px;
+  outline: none;
+}
+.ms-popover-panel select, .ms-popover-panel input[type="datetime-local"] {
+  width: 100%;
+  border: 1px solid var(--ms-border);
+  border-radius: 4px;
+  padding: 6px;
+  font-size: 13px;
+  outline: none;
+}
+.ms-popover-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+}
+.ms-btn-save {
+  background: var(--ms-blue);
+  color: #fff;
+  border: none;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.ms-btn-save:hover { background: var(--ms-blue-dark); }
+.ms-btn-clear {
+  color: var(--ms-danger);
+  background: none;
+  border: none;
+  font-size: 12px;
+  cursor: pointer;
+}
+.ms-btn-clear:hover { text-decoration: underline; }
+
+.ms-task-indicators {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+.ms-indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--ms-text-muted);
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+.ms-indicator:hover {
+  background: var(--ms-hover);
+}
+.ms-indicator.active {
+  color: var(--ms-blue);
+  background: var(--ms-blue-light);
+}
+
+.add-subbar-btn.active {
+  color: var(--ms-blue);
+  background: var(--ms-blue-light);
+}

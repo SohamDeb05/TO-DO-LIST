@@ -40,28 +40,39 @@ interface TaskItemProps {
   onUpdate: (id: number, title: string) => void;
   onToggleImportant: (id: number) => void;
   onUpdateDueDate: (id: number, dueDate: string | null) => void;
+  onUpdateNote: (id: number, note: string | null) => void;
+  onUpdateReminder: (id: number, reminder: string | null) => void;
+  onUpdateRepeat: (id: number, repeat: string | null) => void;
 }
 
-function TaskItem({ todo, onToggle, onDelete, onUpdate, onToggleImportant, onUpdateDueDate }: TaskItemProps) {
+function TaskItem({ todo, onToggle, onDelete, onUpdate, onToggleImportant, onUpdateDueDate, onUpdateNote, onUpdateReminder, onUpdateRepeat }: TaskItemProps) {
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(todo.title);
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showNotePicker, setShowNotePicker] = useState(false);
+  const [showReminderPicker, setShowReminderPicker] = useState(false);
+  const [showRepeatPicker, setShowRepeatPicker] = useState(false);
+  const [noteDraft, setNoteDraft] = useState(todo.note || '');
+  const [reminderDraft, setReminderDraft] = useState(todo.reminder ? todo.reminder.substring(0, 16) : '');
+  const [repeatDraft, setRepeatDraft] = useState(todo.repeat_schedule || 'daily');
   const inputRef = useRef<HTMLInputElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
+  const notePopoverRef = useRef<HTMLDivElement>(null);
+  const reminderPopoverRef = useRef<HTMLDivElement>(null);
+  const repeatPopoverRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => { if (editing) inputRef.current?.focus(); }, [editing]);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
-      if (popoverRef.current && !popoverRef.current.contains(e.target as Node)) {
-        setShowDatePicker(false);
-      }
+      if (popoverRef.current && !popoverRef.current.contains(e.target as Node)) setShowDatePicker(false);
+      if (notePopoverRef.current && !notePopoverRef.current.contains(e.target as Node)) setShowNotePicker(false);
+      if (reminderPopoverRef.current && !reminderPopoverRef.current.contains(e.target as Node)) setShowReminderPicker(false);
+      if (repeatPopoverRef.current && !repeatPopoverRef.current.contains(e.target as Node)) setShowRepeatPicker(false);
     }
-    if (showDatePicker) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
+    document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [showDatePicker]);
+  }, []);
 
   function save() {
     const t = draft.trim();
@@ -113,6 +124,25 @@ function TaskItem({ todo, onToggle, onDelete, onUpdate, onToggleImportant, onUpd
                 <span>Due {new Date(todo.due_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })}</span>
               </div>
             )}
+            {(todo.note || todo.reminder || todo.repeat_schedule) && (
+              <div className="ms-task-indicators">
+                {todo.note && (
+                  <div className="ms-indicator" onClick={() => setShowNotePicker(true)} title="View Note">
+                    <NotebookPen size={10} />
+                  </div>
+                )}
+                {todo.reminder && (
+                  <div className="ms-indicator" onClick={() => setShowReminderPicker(true)} title="View Reminder">
+                    <BellRing size={10} /> {new Date(todo.reminder).toLocaleDateString('en-US', {month:'short', day:'numeric'})}
+                  </div>
+                )}
+                {todo.repeat_schedule && (
+                  <div className="ms-indicator" onClick={() => setShowRepeatPicker(true)} title="View Repeat">
+                    <RefreshCw size={10} /> {todo.repeat_schedule}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -140,6 +170,57 @@ function TaskItem({ todo, onToggle, onDelete, onUpdate, onToggleImportant, onUpd
               <button onClick={() => { onUpdateDueDate(todo.id, null); setShowDatePicker(false); }} className="ms-clear-date-btn">
                 Clear
               </button>
+            </div>
+          )}
+        </div>
+
+        {/* Note inline trigger */}
+        <div className="ms-date-picker-wrap" ref={notePopoverRef}>
+          <button className="ms-action-btn" onClick={() => setShowNotePicker(!showNotePicker)} title="Add note">
+            <NotebookPen size={SM} />
+          </button>
+          {showNotePicker && (
+            <div className="ms-popover-panel">
+              <textarea placeholder="Add a note" value={noteDraft} onChange={e => setNoteDraft(e.target.value)} />
+              <div className="ms-popover-actions">
+                <button className="ms-btn-save" onClick={() => { onUpdateNote(todo.id, noteDraft); setShowNotePicker(false); }}>Save</button>
+                <button className="ms-btn-clear" onClick={() => { setNoteDraft(''); onUpdateNote(todo.id, null); setShowNotePicker(false); }}>Clear</button>
+              </div>
+            </div>
+          )}
+        </div>
+        {/* Reminder inline trigger */}
+        <div className="ms-date-picker-wrap" ref={reminderPopoverRef}>
+          <button className="ms-action-btn" onClick={() => setShowReminderPicker(!showReminderPicker)} title="Remind me">
+            <BellRing size={SM} />
+          </button>
+          {showReminderPicker && (
+            <div className="ms-popover-panel">
+              <input type="datetime-local" value={reminderDraft} onChange={e => setReminderDraft(e.target.value)} />
+              <div className="ms-popover-actions">
+                <button className="ms-btn-save" onClick={() => { onUpdateReminder(todo.id, reminderDraft ? new Date(reminderDraft).toISOString() : null); setShowReminderPicker(false); }}>Save</button>
+                <button className="ms-btn-clear" onClick={() => { setReminderDraft(''); onUpdateReminder(todo.id, null); setShowReminderPicker(false); }}>Clear</button>
+              </div>
+            </div>
+          )}
+        </div>
+        {/* Repeat inline trigger */}
+        <div className="ms-date-picker-wrap" ref={repeatPopoverRef}>
+          <button className="ms-action-btn" onClick={() => setShowRepeatPicker(!showRepeatPicker)} title="Repeat">
+            <RefreshCw size={SM} />
+          </button>
+          {showRepeatPicker && (
+            <div className="ms-popover-panel">
+              <select value={repeatDraft} onChange={e => setRepeatDraft(e.target.value)}>
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+                <option value="yearly">Yearly</option>
+              </select>
+              <div className="ms-popover-actions">
+                <button className="ms-btn-save" onClick={() => { onUpdateRepeat(todo.id, repeatDraft); setShowRepeatPicker(false); }}>Save</button>
+                <button className="ms-btn-clear" onClick={() => { setRepeatDraft('daily'); onUpdateRepeat(todo.id, null); setShowRepeatPicker(false); }}>Clear</button>
+              </div>
             </div>
           )}
         </div>
@@ -196,6 +277,16 @@ type SortKey = 'default' | 'title' | 'dueDate' | 'importance' | 'creationDate';
 export default function TodoPage({ user, onLogout }: TodoPageProps) {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [input, setInput] = useState('');
+  const [newTaskNote, setNewTaskNote] = useState('');
+  const [newTaskReminder, setNewTaskReminder] = useState('');
+  const [newTaskRepeat, setNewTaskRepeat] = useState('');
+  const [showNewNote, setShowNewNote] = useState(false);
+  const [showNewReminder, setShowNewReminder] = useState(false);
+  const [showNewRepeat, setShowNewRepeat] = useState(false);
+  const newNoteRef = useRef<HTMLDivElement>(null);
+  const newReminderRef = useRef<HTMLDivElement>(null);
+  const newRepeatRef = useRef<HTMLDivElement>(null);
+
   const [loading, setLoading] = useState(true);
   const [adding, setAdding] = useState(false);
   const [error, setError] = useState('');
@@ -224,6 +315,16 @@ export default function TodoPage({ user, onLogout }: TodoPageProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const sortMenuRef = useRef<HTMLDivElement>(null);
   const groupMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (newNoteRef.current && !newNoteRef.current.contains(e.target as Node)) setShowNewNote(false);
+      if (newReminderRef.current && !newReminderRef.current.contains(e.target as Node)) setShowNewReminder(false);
+      if (newRepeatRef.current && !newRepeatRef.current.contains(e.target as Node)) setShowNewRepeat(false);
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // Welcome modal — once per user
   const welcomeKey = `taskflow-welcomed-${user.id}`;
@@ -321,9 +422,15 @@ export default function TodoPage({ user, onLogout }: TodoPageProps) {
       const dueDate = activeNav === 'planned' ? new Date().toISOString().split('T')[0] : null;
       const listId = activeNav.startsWith('list-') ? Number(activeNav.substring(5)) : null;
 
-      const { todo } = await createTodo(title, isImportant, dueDate, listId);
+      const notePayload = newTaskNote.trim() ? newTaskNote.trim() : null;
+      const reminderPayload = newTaskReminder ? new Date(newTaskReminder).toISOString() : null;
+      const repeatPayload = newTaskRepeat ? newTaskRepeat : null;
+      const { todo } = await createTodo(title, isImportant, dueDate, listId, notePayload, reminderPayload, repeatPayload);
       setTodos(prev => [...prev, todo]);
       setInput('');
+      setNewTaskNote('');
+      setNewTaskReminder('');
+      setNewTaskRepeat('');
     } catch {
       setError('Could not add task.');
     } finally {
@@ -364,6 +471,27 @@ export default function TodoPage({ user, onLogout }: TodoPageProps) {
   async function handleUpdateDueDate(id: number, due_date: string | null) {
     try {
       const { todo: updated } = await updateTodo(id, { due_date });
+      setTodos(prev => prev.map(t => t.id === id ? updated : t));
+    } catch { setError('Could not update task.'); }
+  }
+
+  async function handleUpdateNote(id: number, note: string | null) {
+    try {
+      const { todo: updated } = await updateTodo(id, { note });
+      setTodos(prev => prev.map(t => t.id === id ? updated : t));
+    } catch { setError('Could not update task.'); }
+  }
+
+  async function handleUpdateReminder(id: number, reminder: string | null) {
+    try {
+      const { todo: updated } = await updateTodo(id, { reminder });
+      setTodos(prev => prev.map(t => t.id === id ? updated : t));
+    } catch { setError('Could not update task.'); }
+  }
+
+  async function handleUpdateRepeat(id: number, repeat_schedule: string | null) {
+    try {
+      const { todo: updated } = await updateTodo(id, { repeat_schedule });
       setTodos(prev => prev.map(t => t.id === id ? updated : t));
     } catch { setError('Could not update task.'); }
   }
@@ -553,6 +681,9 @@ export default function TodoPage({ user, onLogout }: TodoPageProps) {
                 onUpdate={handleUpdate}
                 onToggleImportant={handleToggleImportant}
                 onUpdateDueDate={handleUpdateDueDate}
+                onUpdateNote={handleUpdateNote}
+                onUpdateReminder={handleUpdateReminder}
+                onUpdateRepeat={handleUpdateRepeat}
               />
             ))}
           </div>
@@ -909,9 +1040,58 @@ export default function TodoPage({ user, onLogout }: TodoPageProps) {
                     />
                   </div>
                   <div className="add-task-subbar">
-                    <button className="add-subbar-btn" title="Note"><NotebookPen size={SM} /></button>
-                    <button className="add-subbar-btn" title="Reminder"><BellRing size={SM} /></button>
-                    <button className="add-subbar-btn" title="Repeat"><RefreshCw size={SM} /></button>
+                    {/* New Task Note */}
+                    <div className="ms-menu-container" ref={newNoteRef}>
+                      <button className={`add-subbar-btn${newTaskNote ? ' active' : ''}`} onClick={() => setShowNewNote(!showNewNote)} title="Note">
+                        <NotebookPen size={SM} />
+                      </button>
+                      {showNewNote && (
+                        <div className="ms-popover-panel" style={{ bottom: '34px', left: 0, right: 'auto' }}>
+                          <textarea placeholder="Add a note" value={newTaskNote} onChange={e => setNewTaskNote(e.target.value)} />
+                          <div className="ms-popover-actions">
+                            <button className="ms-btn-save" onClick={() => setShowNewNote(false)}>Done</button>
+                            <button className="ms-btn-clear" onClick={() => { setNewTaskNote(''); setShowNewNote(false); }}>Clear</button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* New Task Reminder */}
+                    <div className="ms-menu-container" ref={newReminderRef}>
+                      <button className={`add-subbar-btn${newTaskReminder ? ' active' : ''}`} onClick={() => setShowNewReminder(!showNewReminder)} title="Reminder">
+                        <BellRing size={SM} />
+                      </button>
+                      {showNewReminder && (
+                        <div className="ms-popover-panel" style={{ bottom: '34px', left: 0, right: 'auto' }}>
+                          <input type="datetime-local" value={newTaskReminder} onChange={e => setNewTaskReminder(e.target.value)} />
+                          <div className="ms-popover-actions">
+                            <button className="ms-btn-save" onClick={() => setShowNewReminder(false)}>Done</button>
+                            <button className="ms-btn-clear" onClick={() => { setNewTaskReminder(''); setShowNewReminder(false); }}>Clear</button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* New Task Repeat */}
+                    <div className="ms-menu-container" ref={newRepeatRef}>
+                      <button className={`add-subbar-btn${newTaskRepeat ? ' active' : ''}`} onClick={() => setShowNewRepeat(!showNewRepeat)} title="Repeat">
+                        <RefreshCw size={SM} />
+                      </button>
+                      {showNewRepeat && (
+                        <div className="ms-popover-panel" style={{ bottom: '34px', left: 0, right: 'auto' }}>
+                          <select value={newTaskRepeat || 'daily'} onChange={e => setNewTaskRepeat(e.target.value)}>
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="monthly">Monthly</option>
+                            <option value="yearly">Yearly</option>
+                          </select>
+                          <div className="ms-popover-actions">
+                            <button className="ms-btn-save" onClick={() => setShowNewRepeat(false)}>Done</button>
+                            <button className="ms-btn-clear" onClick={() => { setNewTaskRepeat(''); setShowNewRepeat(false); }}>Clear</button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                     <button
                       id="todo-add-btn"
                       className="btn-add"

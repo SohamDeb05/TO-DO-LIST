@@ -73,6 +73,17 @@ export async function ensureSchema() {
   await pool.query(`
     ALTER TABLE todos ADD COLUMN IF NOT EXISTS list_id INT REFERENCES lists(id) ON DELETE SET NULL;
   `);
+
+  // Add new columns for note, reminder, repeat_schedule
+  await pool.query(`
+    ALTER TABLE todos ADD COLUMN IF NOT EXISTS note TEXT;
+  `);
+  await pool.query(`
+    ALTER TABLE todos ADD COLUMN IF NOT EXISTS reminder TIMESTAMPTZ;
+  `);
+  await pool.query(`
+    ALTER TABLE todos ADD COLUMN IF NOT EXISTS repeat_schedule VARCHAR(50);
+  `);
 }
 
 export default pool;
