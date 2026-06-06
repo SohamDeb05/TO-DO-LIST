@@ -1038,8 +1038,8 @@ export default function TodoPage({ user, onLogout, onUpdateUser }) {
     /* Task area */
   }<div className="task-area">{error && <div style={{ padding: "10px 24px" }}><div className="auth-error" style={{ borderRadius: 6, marginBottom: 0 }}>{error}</div></div>}{
     /* Progress bar */
-  }{todos.length > 0 && <div className="ms-progress-wrap" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "20px 24px" }}>
-    <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+  }{todos.length > 0 && <div className="ms-progress-wrap" style={{ display: "flex", gap: "16px", padding: "16px 24px", flexWrap: "wrap", background: "var(--ms-bg-secondary)", borderBottom: "1px solid var(--ms-border)" }}>
+    <div style={{ flex: "1 1 220px", background: "var(--ms-bg)", border: "1px solid var(--ms-border)", borderRadius: "12px", padding: "20px", display: "flex", flexDirection: "column", justifyContent: "center", gap: "6px", boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
       <span className="ms-progress-label" style={{ fontSize: "18px", fontWeight: "600", color: "var(--ms-text)", letterSpacing: "-0.3px" }}>
         {completedCount} of {todos.length} tasks completed
       </span>
@@ -1047,10 +1047,18 @@ export default function TodoPage({ user, onLogout, onUpdateUser }) {
         {pct === 100 ? "\u{1F389} Great job, you're all done!" : `${pct}% completed`}
       </span>
     </div>
-    <svg width="84" height="84" viewBox="0 0 42 42" className="ms-pie-chart" style={{ transform: "rotate(-90deg)", borderRadius: "50%", flexShrink: 0, dropShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>
-      <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="var(--ms-border)" strokeWidth="3"></circle>
-      <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke={pct === 100 ? "var(--ms-success)" : viewMeta.color} strokeWidth="3.5" strokeDasharray={`${pct} ${100 - pct}`} strokeDashoffset="0" strokeLinecap="round" style={{ transition: "stroke-dasharray 0.5s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.3s ease" }}></circle>
-    </svg>
+    <div style={{ flex: "1 1 220px", background: "var(--ms-bg)", border: "1px solid var(--ms-border)", borderRadius: "12px", padding: "20px", display: "flex", alignItems: "center", justifyContent: "space-between", boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+         <span style={{ fontSize: "13px", fontWeight: "500", color: "var(--ms-text-muted)", textTransform: "uppercase", letterSpacing: "0.5px" }}>Overall Progress</span>
+         <span style={{ fontSize: "22px", fontWeight: "700", color: pct === 100 ? "var(--ms-success)" : viewMeta.color }}>
+           {pct}%
+         </span>
+      </div>
+      <svg width="64" height="64" viewBox="0 0 42 42" className="ms-pie-chart" style={{ transform: "rotate(-90deg)", borderRadius: "50%", flexShrink: 0 }}>
+        <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="var(--ms-border)" strokeWidth="4"></circle>
+        <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke={pct === 100 ? "var(--ms-success)" : viewMeta.color} strokeWidth="4.5" strokeDasharray={`${pct} ${100 - pct}`} strokeDashoffset="0" strokeLinecap="round" style={{ transition: "stroke-dasharray 0.5s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.3s ease" }}></circle>
+      </svg>
+    </div>
   </div>}{
     /* Add task */
   }<div className="add-task-section"><div className="add-task-row" onClick={() => inputRef.current?.focus()}><div className="add-task-circle" style={{ borderColor: viewMeta.color, color: viewMeta.color }}><Plus size={12} strokeWidth={2.5} /></div><input
