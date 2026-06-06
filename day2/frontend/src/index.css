@@ -1947,9 +1947,9 @@ body.dark-theme .add-task-section input {
 body.dark-theme .ms-popover-panel textarea,
 body.dark-theme .ms-popover-panel select,
 body.dark-theme .ms-popover-panel input {
-  background-color: var(--ms-bg);
-  color: var(--ms-text);
-  border-color: var(--ms-border);
+  background-color: var(--ms-bg) !important;
+  color: var(--ms-text) !important;
+  border-color: var(--ms-border) !important;
 }
 
 body.dark-theme .ms-profile-edit-input {
