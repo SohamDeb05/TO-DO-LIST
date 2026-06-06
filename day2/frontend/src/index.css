@@ -419,22 +419,22 @@ input  { font-family: inherit; }
   margin: 8px 0;
 }
 .add-task-row {
-  display: flex; align-items: center; gap: 12px;
-  padding: 11px 24px; cursor: text;
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 24px; cursor: text;
   transition: background 0.1s;
 }
 .add-task-row:hover { background: var(--ms-hover); }
 
 .add-task-circle {
-  width: 18px; height: 18px; border-radius: 50%;
+  width: 22px; height: 22px; border-radius: 50%;
   border: 1.5px solid var(--ms-blue);
   display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; color: var(--ms-blue); font-size: 12px; font-weight: 700;
+  flex-shrink: 0; color: var(--ms-blue); font-size: 14px; font-weight: 700;
 }
 
 .add-task-input {
   flex: 1; border: none; background: transparent;
-  font-size: 14px; color: var(--ms-text); outline: none;
+  font-size: 16px; color: var(--ms-text); outline: none;
 }
 .add-task-input::placeholder { color: var(--ms-text-dim); }
 
@@ -465,8 +465,8 @@ input  { font-family: inherit; }
 .ms-task-list { padding: 4px 0; }
 
 .ms-task-item {
-  display: flex; align-items: center; gap: 12px;
-  padding: 8px 24px; cursor: default;
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 24px; cursor: default;
   border-bottom: 1px solid transparent;
   transition: background 0.1s;
   animation: slideIn 0.15s ease both;
@@ -474,7 +474,7 @@ input  { font-family: inherit; }
 .ms-task-item:hover { background: var(--ms-hover); }
 
 .ms-check {
-  width: 18px; height: 18px; border-radius: 50%;
+  width: 22px; height: 22px; border-radius: 50%;
   border: 1.5px solid var(--ms-text-dim);
   flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
@@ -487,7 +487,7 @@ input  { font-family: inherit; }
 .ms-check svg { display: none; width: 10px; height: 10px; }
 
 .ms-task-title {
-  flex: 1; font-size: 14px; color: var(--ms-text);
+  flex: 1; font-size: 16px; color: var(--ms-text);
   cursor: default; user-select: none; line-height: 1.4;
 }
 .ms-task-title.done { text-decoration: line-through; color: var(--ms-text-dim); }
@@ -495,7 +495,7 @@ input  { font-family: inherit; }
 .ms-edit-input {
   flex: 1; border: none;
   border-bottom: 1.5px solid var(--ms-blue);
-  background: transparent; font-size: 14px;
+  background: transparent; font-size: 16px;
   color: var(--ms-text); outline: none; padding-bottom: 1px;
 }
 
