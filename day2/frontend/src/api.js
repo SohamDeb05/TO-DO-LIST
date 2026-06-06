@@ -1,4 +1,4 @@
-const BASE = 'http://localhost:4001/api';
+const BASE = import.meta.env.VITE_API_URL || 'http://localhost:4001/api';
 
 export const DEFAULT_SETTINGS = {
   confirmBeforeDeleting: true,
