@@ -300,6 +300,7 @@ export default function TodoPage({ user, onLogout, onUpdateUser }) {
   const [showSortMenu, setShowSortMenu] = useState(false);
   const [completedExpanded, setCompletedExpanded] = useState(true);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [groupBy, setGroupBy] = useState("none");
   const [showGroupMenu, setShowGroupMenu] = useState(false);
   const [collapsedGroups, setCollapsedGroups] = useState({});
@@ -868,7 +869,13 @@ export default function TodoPage({ user, onLogout, onUpdateUser }) {
     id="sidebar-toggle"
     className="top-bar-btn-icon"
     title="Collapse/Expand menus"
-    onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+    onClick={() => {
+      if (window.innerWidth <= 600) {
+        setMobileOpen(!mobileOpen);
+      } else {
+        setSidebarCollapsed(!sidebarCollapsed);
+      }
+    }}
   ><Menu size={S} /></button><span className="top-bar-logo">To Do</span><div className="top-bar-search-wrap"><span className="top-bar-search-icon"><Search size={14} /></span><input
     className="top-bar-search"
     type="search"
@@ -903,7 +910,7 @@ export default function TodoPage({ user, onLogout, onUpdateUser }) {
     /* ── App body ────────────────────────────────────────────────────── */
   }<div className="app-body">{
     /* Sidebar */
-  }<aside className={`sidebar${sidebarCollapsed ? " collapsed" : ""}`}><nav className="nav-list">{
+  }<aside className={`sidebar${sidebarCollapsed ? " collapsed" : ""}${mobileOpen ? " mobile-open" : ""}`}><nav className="nav-list">{
     /* Static top navigation */
   }{NAV.filter((item) => {
     if (item.id === "important") {

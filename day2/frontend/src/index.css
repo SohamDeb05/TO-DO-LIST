@@ -1968,3 +1968,145 @@ body.dark-theme .list-move-select {
   color: var(--ms-text);
 }
 
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  RESPONSIVE — Tablet (≤ 900px)                                             */
+/* ══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  /* Auth page: stack to single column */
+  .auth-split-container {
+    flex-direction: column;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  .auth-hero { display: none; }
+  .auth-form-container { padding: 36px 28px; }
+  .auth-heading { font-size: 24px; }
+
+  /* Sidebar: collapse to icon-only */
+  .sidebar {
+    width: 48px;
+  }
+  .sidebar .sidebar-divider,
+  .sidebar .nav-scrollable-area,
+  .sidebar .nav-new-list-row,
+  .sidebar .nav-new-list {
+    display: none;
+  }
+  .sidebar .nav-item {
+    font-size: 0;
+    padding: 10px 0;
+    justify-content: center;
+    border-left-width: 3px;
+  }
+  .sidebar .nav-item .nav-icon {
+    margin: 0;
+  }
+
+  /* Content header: tighter padding */
+  .content-header { padding: 12px 16px 0; }
+  .ms-task-item { padding: 8px 16px; }
+  .add-task-row { padding: 11px 16px; }
+  .add-task-subbar { padding: 2px 16px 10px; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  RESPONSIVE — Mobile (≤ 600px)                                             */
+/* ══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 600px) {
+  /* Auth page: full width, no gap */
+  .auth-screen { padding: 0; align-items: flex-start; }
+  .auth-split-container {
+    max-width: 100%;
+    width: 100%;
+    min-height: 100vh;
+    border-radius: 0;
+    border: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(255,255,255,0.95);
+  }
+  .auth-form-container { padding: 40px 24px; }
+  .auth-heading { font-size: 22px; }
+  .auth-sub { font-size: 14px; }
+  .form-input { font-size: 16px; } /* prevents iOS auto-zoom */
+
+  /* Hide sidebar on mobile */
+  .sidebar { display: none; }
+  .sidebar.mobile-open { display: flex; position: fixed; top: 48px; left: 0; bottom: 0; width: 240px; z-index: 500; box-shadow: 4px 0 24px rgba(0,0,0,0.18); }
+  .sidebar.mobile-open .sidebar-divider,
+  .sidebar.mobile-open .nav-scrollable-area,
+  .sidebar.mobile-open .nav-new-list-row,
+  .sidebar.mobile-open .nav-new-list { display: flex; }
+  .sidebar.mobile-open .nav-item { font-size: 14px; padding: 8px 12px; justify-content: flex-start; }
+
+  /* Top bar: compact */
+  .top-bar-search-wrap { display: none; }
+  .top-bar-logo { font-size: 14px; }
+
+  /* Content: full width */
+  .main-area { overflow-y: auto; }
+  .content-header { padding: 10px 12px 0; }
+  .content-title { font-size: 18px; }
+  .ms-task-item { padding: 8px 12px; gap: 8px; }
+  .add-task-row { padding: 11px 12px; }
+  .add-task-subbar { padding: 2px 12px 10px; }
+
+  /* Modals: full screen on mobile */
+  .modal-backdrop { padding: 0; align-items: flex-end; }
+  .modal-card {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 16px 16px 0 0;
+    padding: 28px 20px 32px;
+    animation: slideUpMobile 0.3s ease both;
+  }
+  @keyframes slideUpMobile {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
+  }
+
+  /* Popovers: full width */
+  .ms-popover-panel {
+    left: 0;
+    right: 0;
+    min-width: unset;
+    width: calc(100vw - 24px);
+  }
+
+  /* Right panel: full screen overlay */
+  .ms-right-panel {
+    width: 100% !important;
+    top: 48px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: calc(100vh - 48px);
+  }
+
+  /* Profile popover */
+  .ms-profile-popover {
+    right: -8px;
+    width: calc(100vw - 16px);
+  }
+
+  /* Progress bar text */
+  .ms-progress-label,
+  .ms-progress-pct { font-size: 11px; }
+
+  /* Content toolbar: wrap */
+  .content-toolbar { flex-wrap: wrap; gap: 4px; }
+  .content-view-toggle { display: none; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  RESPONSIVE — Small phones (≤ 380px)                                       */
+/* ══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 380px) {
+  .auth-form-container { padding: 32px 16px; }
+  .auth-heading { font-size: 20px; }
+  .btn-primary { font-size: 14px; padding: 11px; }
+  .content-title { font-size: 16px; }
+  .ms-task-item { padding: 7px 10px; }
+  .top-bar { padding: 0 4px; }
+  .top-bar-logo { font-size: 13px; }
+}
