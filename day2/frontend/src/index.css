@@ -1435,7 +1435,7 @@ input  { font-family: inherit; }
   font-weight: 500;
   cursor: pointer;
   border: 1px solid var(--ms-border);
-  background: white;
+  background: var(--ms-surface);
   color: var(--ms-text);
 }
 

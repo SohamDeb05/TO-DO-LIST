@@ -36,7 +36,7 @@ export default function ConfirmModal({ title, message, onConfirm, onCancel }) {
               padding: '8px 16px',
               borderRadius: '4px',
               border: '1px solid var(--ms-border)',
-              background: 'white',
+              background: 'var(--ms-surface)',
               color: 'var(--ms-text)',
               fontSize: '14px',
               fontWeight: 500,
