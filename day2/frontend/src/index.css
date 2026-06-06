@@ -1021,6 +1021,8 @@ input  { font-family: inherit; }
   resize: vertical;
   min-height: 80px;
   outline: none;
+  background: var(--ms-surface);
+  color: var(--ms-text);
 }
 .ms-popover-panel select, .ms-popover-panel input[type="datetime-local"] {
   width: 100%;
@@ -1029,6 +1031,8 @@ input  { font-family: inherit; }
   padding: 6px;
   font-size: 13px;
   outline: none;
+  background: var(--ms-surface);
+  color: var(--ms-text);
 }
 .ms-popover-actions {
   display: flex;
@@ -1907,3 +1911,60 @@ body.dark-theme .ms-whatsnew-btn {
 body.dark-theme .ms-whatsnew-btn:hover {
   background-color: var(--ms-hover);
 }
+
+/* ── Dark Theme: Inputs, Selects, Textareas ─────────────────────────────── */
+body.dark-theme input,
+body.dark-theme select,
+body.dark-theme textarea {
+  background-color: var(--ms-bg-secondary);
+  color: var(--ms-text);
+  border-color: var(--ms-border);
+}
+
+body.dark-theme input::placeholder,
+body.dark-theme textarea::placeholder {
+  color: var(--ms-text-placeholder);
+}
+
+body.dark-theme .form-input {
+  background-color: var(--ms-bg-secondary);
+  color: var(--ms-text);
+  border-color: var(--ms-border);
+}
+
+body.dark-theme .add-task-bar,
+body.dark-theme .add-task-section {
+  background: var(--ms-bg-secondary);
+  border-color: var(--ms-border);
+}
+
+body.dark-theme .add-task-bar input,
+body.dark-theme .add-task-section input {
+  background: transparent;
+  color: var(--ms-text);
+}
+
+body.dark-theme .ms-popover-panel textarea,
+body.dark-theme .ms-popover-panel select,
+body.dark-theme .ms-popover-panel input {
+  background-color: var(--ms-bg);
+  color: var(--ms-text);
+  border-color: var(--ms-border);
+}
+
+body.dark-theme .ms-profile-edit-input {
+  background-color: var(--ms-bg-secondary);
+  color: var(--ms-text);
+  border-color: var(--ms-border);
+}
+
+body.dark-theme .modal-card,
+body.dark-theme .modal-backdrop .modal-card {
+  background: var(--ms-bg-secondary);
+}
+
+body.dark-theme .list-move-select {
+  background: var(--ms-bg-secondary);
+  color: var(--ms-text);
+}
+
