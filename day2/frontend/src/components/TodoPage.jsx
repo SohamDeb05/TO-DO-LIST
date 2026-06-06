@@ -1051,7 +1051,7 @@ export default function TodoPage({ user, onLogout, onUpdateUser }) {
       <span style={{ fontSize: "14px", fontWeight: "600", color: "var(--ms-text-muted)", textTransform: "uppercase", letterSpacing: "0.5px" }}>Overall Progress</span>
       <div style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <svg width="110" height="110" viewBox="0 0 42 42" className="ms-pie-chart" style={{ transform: "rotate(-90deg)", borderRadius: "50%", flexShrink: 0 }}>
-          <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="var(--ms-border)" strokeWidth="3.5"></circle>
+          <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="rgba(0, 0, 0, 0.12)" strokeWidth="3.5"></circle>
           <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke={pct === 100 ? "var(--ms-success)" : viewMeta.color} strokeWidth="4" strokeDasharray={`${pct} ${100 - pct}`} strokeDashoffset="0" strokeLinecap="round" style={{ transition: "stroke-dasharray 0.5s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.3s ease" }}></circle>
         </svg>
         <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
