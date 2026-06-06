@@ -11,7 +11,7 @@ const port = Number(process.env.PORT || 4001);
 const clientOrigin = process.env.CLIENT_ORIGIN || 'http://localhost:5174';
 const jwtSecret = process.env.JWT_SECRET || 'dev-secret-change-me';
 
-app.use(cors({ origin: clientOrigin }));
+app.use(cors({ origin: '*' })); // Allow all origins for easier deployment
 app.use(express.json({ limit: '5mb' }));
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
