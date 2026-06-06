@@ -12,7 +12,7 @@ const clientOrigin = process.env.CLIENT_ORIGIN || 'http://localhost:5174';
 const jwtSecret = process.env.JWT_SECRET || 'dev-secret-change-me';
 
 app.use(cors({ origin: clientOrigin }));
-app.use(express.json());
+app.use(express.json({ limit: '5mb' }));
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -27,6 +27,7 @@ function formatUser(row) {
     id: row.id,
     name: row.name,
     email: row.email,
+    profilePicture: row.profile_picture,
     createdAt: row.created_at,
   };
 }
@@ -62,7 +63,7 @@ app.post('/api/auth/signup', async (req, res) => {
 
     const passwordHash = await bcrypt.hash(password, 10);
     const result = await pool.query(
-      'INSERT INTO users (name, email, password_hash) VALUES ($1, $2, $3) RETURNING id, name, email, created_at',
+      'INSERT INTO users (name, email, password_hash) VALUES ($1, $2, $3) RETURNING id, name, email, profile_picture, created_at',
       [name, email, passwordHash],
     );
 
@@ -84,7 +85,7 @@ app.post('/api/auth/login', async (req, res) => {
 
   try {
     const result = await pool.query(
-      'SELECT id, name, email, created_at, password_hash FROM users WHERE email = $1',
+      'SELECT id, name, email, created_at, profile_picture, password_hash FROM users WHERE email = $1',
       [email],
     );
     if (!result.rowCount)
@@ -105,7 +106,7 @@ app.post('/api/auth/login', async (req, res) => {
 app.get('/api/auth/me', requireAuth, async (req, res) => {
   try {
     const result = await pool.query(
-      'SELECT id, name, email, created_at FROM users WHERE id = $1',
+      'SELECT id, name, email, profile_picture, created_at FROM users WHERE id = $1',
       [req.user.sub],
     );
     if (!result.rowCount)
@@ -113,6 +114,57 @@ app.get('/api/auth/me', requireAuth, async (req, res) => {
     return res.json({ user: formatUser(result.rows[0]) });
   } catch {
     return res.status(500).json({ message: 'Could not load profile.' });
+  }
+});
+
+app.put('/api/auth/profile', requireAuth, async (req, res) => {
+  const name = req.body.name?.trim();
+  const profilePicture = req.body.profilePicture; // Expected to be base64 data URI
+
+  if (!name) return res.status(400).json({ message: 'Name is required' });
+
+  try {
+    const result = await pool.query(
+      'UPDATE users SET name = $1, profile_picture = $2 WHERE id = $3 RETURNING id, name, email, profile_picture, created_at',
+      [name, profilePicture, req.user.sub]
+    );
+    if (!result.rowCount) return res.status(404).json({ message: 'User not found' });
+    
+    return res.json({ message: 'Profile updated.', user: formatUser(result.rows[0]) });
+  } catch (err) {
+    return res.status(500).json({ message: 'Could not update profile.' });
+  }
+});
+
+// ─── Settings Routes ────────────────────────────────────────────────────────────
+
+// GET /api/settings
+app.get('/api/settings', requireAuth, async (req, res) => {
+  try {
+    const result = await pool.query('SELECT settings FROM users WHERE id = $1', [req.user.sub]);
+    if (!result.rowCount) return res.status(404).json({ message: 'User not found' });
+    return res.json({ settings: result.rows[0].settings || {} });
+  } catch (err) {
+    return res.status(500).json({ message: 'Could not fetch settings.' });
+  }
+});
+
+// PUT /api/settings
+app.put('/api/settings', requireAuth, async (req, res) => {
+  const settings = req.body;
+  if (!settings || typeof settings !== 'object') {
+    return res.status(400).json({ message: 'Invalid settings object' });
+  }
+
+  try {
+    const result = await pool.query(
+      'UPDATE users SET settings = $1 WHERE id = $2 RETURNING settings',
+      [settings, req.user.sub]
+    );
+    if (!result.rowCount) return res.status(404).json({ message: 'User not found' });
+    return res.json({ settings: result.rows[0].settings });
+  } catch (err) {
+    return res.status(500).json({ message: 'Could not update settings.' });
   }
 });
 

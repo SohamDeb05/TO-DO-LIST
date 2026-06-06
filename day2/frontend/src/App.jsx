@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import AuthPage from './components/AuthPage';
 import TodoPage from './components/TodoPage';
-import { clearSession, loadSession, type User } from './api';
+import { clearSession, loadSession } from './api';
 
 export default function App() {
-  const [user, setUser] = useState<User | null>(() => {
+  const [user, setUser] = useState(() => {
     return loadSession()?.user ?? null;
   });
 
-  function handleLogin(u: User) {
+  function handleLogin(u) {
     setUser(u);
   }
 
@@ -18,7 +18,7 @@ export default function App() {
   }
 
   if (user) {
-    return <TodoPage user={user} onLogout={handleLogout} />;
+    return <TodoPage user={user} onLogout={handleLogout} onUpdateUser={setUser} />;
   }
 
   return <AuthPage onLogin={handleLogin} />;

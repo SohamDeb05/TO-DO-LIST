@@ -1,10 +1,5 @@
 import { CheckSquare, Lock, Zap, Rocket } from 'lucide-react';
 
-interface WelcomeModalProps {
-  userName: string;
-  onClose: () => void;
-}
-
 const features = [
   {
     icon: <CheckSquare size={22} color="#107c41" />,
@@ -26,7 +21,7 @@ const features = [
   },
 ];
 
-export default function WelcomeModal({ userName, onClose }: WelcomeModalProps) {
+export default function WelcomeModal({ userName, onClose }) {
   return (
     <div className="modal-backdrop" onClick={onClose}>
       <div

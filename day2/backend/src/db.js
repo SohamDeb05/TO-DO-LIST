@@ -30,6 +30,14 @@ export async function ensureSchema() {
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
   `);
+  // Add profile_picture column if it doesn't exist
+  await pool.query(`
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS profile_picture TEXT;
+  `);
+  // Add settings column if it doesn't exist
+  await pool.query(`
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS settings JSONB DEFAULT '{}'::jsonb;
+  `);
   // Todos table — owned by a user
   await pool.query(`
     CREATE TABLE IF NOT EXISTS todos (
