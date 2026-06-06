@@ -1465,7 +1465,7 @@ input  { font-family: inherit; }
 }
 
 .ms-toast {
-  background: white;
+  background: var(--ms-surface);
   border-left: 4px solid var(--ms-blue);
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   padding: 12px 16px;
