@@ -1047,17 +1047,19 @@ export default function TodoPage({ user, onLogout, onUpdateUser }) {
         {pct === 100 ? "\u{1F389} Great job, you're all done!" : `${pct}% completed`}
       </span>
     </div>
-    <div style={{ flex: "1 1 220px", background: "var(--ms-bg)", border: "1px solid var(--ms-border)", borderRadius: "12px", padding: "20px", display: "flex", alignItems: "center", justifyContent: "space-between", boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
-      <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-         <span style={{ fontSize: "13px", fontWeight: "500", color: "var(--ms-text-muted)", textTransform: "uppercase", letterSpacing: "0.5px" }}>Overall Progress</span>
-         <span style={{ fontSize: "22px", fontWeight: "700", color: pct === 100 ? "var(--ms-success)" : viewMeta.color }}>
-           {pct}%
-         </span>
+    <div style={{ flex: "1 1 220px", background: "var(--ms-bg)", border: "1px solid var(--ms-border)", borderRadius: "12px", padding: "20px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "12px", boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
+      <span style={{ fontSize: "13px", fontWeight: "600", color: "var(--ms-text-muted)", textTransform: "uppercase", letterSpacing: "0.5px" }}>Overall Progress</span>
+      <div style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <svg width="76" height="76" viewBox="0 0 42 42" className="ms-pie-chart" style={{ transform: "rotate(-90deg)", borderRadius: "50%", flexShrink: 0 }}>
+          <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="var(--ms-border)" strokeWidth="3.5"></circle>
+          <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke={pct === 100 ? "var(--ms-success)" : viewMeta.color} strokeWidth="4" strokeDasharray={`${pct} ${100 - pct}`} strokeDashoffset="0" strokeLinecap="round" style={{ transition: "stroke-dasharray 0.5s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.3s ease" }}></circle>
+        </svg>
+        <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <span style={{ fontSize: "18px", fontWeight: "700", color: pct === 100 ? "var(--ms-success)" : viewMeta.color }}>
+            {pct}%
+          </span>
+        </div>
       </div>
-      <svg width="64" height="64" viewBox="0 0 42 42" className="ms-pie-chart" style={{ transform: "rotate(-90deg)", borderRadius: "50%", flexShrink: 0 }}>
-        <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="var(--ms-border)" strokeWidth="4"></circle>
-        <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke={pct === 100 ? "var(--ms-success)" : viewMeta.color} strokeWidth="4.5" strokeDasharray={`${pct} ${100 - pct}`} strokeDashoffset="0" strokeLinecap="round" style={{ transition: "stroke-dasharray 0.5s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.3s ease" }}></circle>
-      </svg>
     </div>
   </div>}{
     /* Add task */
