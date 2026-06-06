@@ -2074,13 +2074,16 @@ body.dark-theme .list-move-select {
   }
 
   /* Right panel: full screen overlay */
-  .ms-right-panel {
+  .ms-right-panel:not(.open) {
+    display: none !important;
+  }
+  .ms-right-panel.open {
     width: 100% !important;
-    top: 48px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: calc(100vh - 48px);
+    top: 48px !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    height: calc(100vh - 48px) !important;
   }
 
   /* Profile popover */
