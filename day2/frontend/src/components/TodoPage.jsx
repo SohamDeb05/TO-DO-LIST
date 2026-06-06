@@ -1038,13 +1038,13 @@ export default function TodoPage({ user, onLogout, onUpdateUser }) {
     /* Task area */
   }<div className="task-area">{error && <div style={{ padding: "10px 24px" }}><div className="auth-error" style={{ borderRadius: 6, marginBottom: 0 }}>{error}</div></div>}{
     /* Progress bar */
-  }{todos.length > 0 && <div className="ms-progress-wrap"><div className="ms-progress-header"><div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-    <svg width="24" height="24" viewBox="0 0 42 42" className="ms-pie-chart" style={{ transform: "rotate(-90deg)", borderRadius: "50%" }}>
-      <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="var(--ms-border)" strokeWidth="8"></circle>
-      <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke={pct === 100 ? "var(--ms-success)" : viewMeta.color} strokeWidth="8" strokeDasharray={`${pct} ${100 - pct}`} strokeDashoffset="0" style={{ transition: "stroke-dasharray 0.5s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.3s ease" }}></circle>
+  }{todos.length > 0 && <div className="ms-progress-wrap"><div className="ms-progress-header" style={{ paddingBottom: "8px" }}><div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+    <svg width="48" height="48" viewBox="0 0 42 42" className="ms-pie-chart" style={{ transform: "rotate(-90deg)", borderRadius: "50%" }}>
+      <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="var(--ms-border)" strokeWidth="6"></circle>
+      <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke={pct === 100 ? "var(--ms-success)" : viewMeta.color} strokeWidth="6" strokeDasharray={`${pct} ${100 - pct}`} strokeDashoffset="0" style={{ transition: "stroke-dasharray 0.5s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.3s ease" }}></circle>
     </svg>
-    <span className="ms-progress-label">{completedCount} of {todos.length} tasks completed</span>
-  </div><span className="ms-progress-pct" style={{ color: pct === 100 ? "var(--ms-success)" : viewMeta.color }}>{pct === 100 ? "\u{1F389} All done!" : `${pct}%`}</span></div><div className="ms-progress-track"><div
+    <span className="ms-progress-label" style={{ fontSize: "16px", fontWeight: "500" }}>{completedCount} of {todos.length} tasks completed</span>
+  </div><span className="ms-progress-pct" style={{ fontSize: "16px", color: pct === 100 ? "var(--ms-success)" : viewMeta.color }}>{pct === 100 ? "\u{1F389} All done!" : `${pct}%`}</span></div><div className="ms-progress-track"><div
     className={`ms-progress-fill${pct === 100 ? " complete" : ""}`}
     style={{
       width: `${pct}%`,
