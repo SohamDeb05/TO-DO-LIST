@@ -2013,17 +2013,12 @@ body.dark-theme .list-move-select {
 /*  RESPONSIVE — Mobile (≤ 600px)                                             */
 /* ══════════════════════════════════════════════════════════════════════════ */
 @media (max-width: 600px) {
-  /* Auth page: full width, no gap */
-  .auth-screen { padding: 0; align-items: flex-start; }
+  /* Auth page: floating glass card on mobile */
+  .auth-screen { padding: 16px; align-items: center; }
   .auth-split-container {
     max-width: 100%;
     width: 100%;
-    min-height: 100vh;
-    border-radius: 0;
-    border: none;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    background: rgba(255,255,255,0.95);
+    min-height: auto;
   }
   .auth-form-container { padding: 40px 24px; }
   .auth-heading { font-size: 22px; }
