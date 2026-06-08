@@ -2108,3 +2108,12 @@ body.dark-theme .list-move-select {
   .top-bar { padding: 0 4px; }
   .top-bar-logo { font-size: 13px; }
 }
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  PRINT MEDIA                                                               */
+/* ══════════════════════════════════════════════════════════════════════════ */
+@media print {
+  .ms-progress-wrap {
+    display: none !important;
+  }
+}
